@@ -1,0 +1,90 @@
+<section class="bg-ivory dark:bg-dark-blue min-h-screen p-6 transition-colors duration-300">
+  <h1 class="text-3xl font-bold text-teal-green dark:text-baby-blue text-center mb-8 animate-fade-in flex items-center justify-center transition-colors duration-300">
+    <fa-icon [icon]="['fas', 'shopping-bag']" class="mr-3 animate-bounce-light"></fa-icon>
+    Checkout
+  </h1>
+  
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="text-center py-12 animate-fade-in">
+    <fa-icon [icon]="['fas', 'spinner']" class="text-teal-green dark:text-baby-blue fa-spin text-4xl transition-colors duration-300"></fa-icon>
+    <p class="mt-4 text-misty-blue dark:text-baby-blue transition-colors duration-300">Loading order details...</p>
+  </div>
+  
+  <div *ngIf="!loading" class="max-w-4xl mx-auto bg-white dark:bg-navy-blue rounded-lg shadow-lg p-8 animate-slide-up transition-colors duration-300">
+    <!-- Order Summary Header -->
+    <h2 class="text-2xl font-semibold text-misty-blue dark:text-baby-blue mb-4 flex items-center transition-colors duration-300">
+      <fa-icon [icon]="['fas', 'truck']" class="mr-2"></fa-icon>
+      Order Summary
+    </h2>
+    
+    <!-- Empty Cart Warning -->
+    <div *ngIf="cartItems.length === 0" class="text-center text-misty-blue dark:text-baby-blue py-6 transition-colors duration-300">
+      <p class="text-xl">Your cart is empty.</p>
+      <button routerLink="/products" class="mt-4 bg-aqua dark:bg-bright-blue text-white px-6 py-2 rounded hover:bg-teal-green dark:hover:bg-baby-blue transition-colors duration-200 flex items-center mx-auto">
+        <fa-icon [icon]="['fas', 'shopping-bag']" class="mr-2"></fa-icon>
+        Continue Shopping
+      </button>
+    </div>
+    
+    <!-- Order Items -->
+    <div *ngIf="cartItems.length > 0" class="space-y-4">
+      <div *ngFor="let item of cartItems; let i = index" 
+           class="flex items-center justify-between border-b dark:border-baby-blue/30 pb-4 animate-slide-in-right transition-colors duration-300"
+           [style.animation-delay]="i * 100 + 'ms'">
+        <div class="flex items-center">
+          <div class="w-16 h-16 mr-4">
+            <img [src]="item.product.image_path | imageUrl" alt="{{ item.product.name }}" class="w-full h-full object-cover rounded-md">
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-misty-blue dark:text-baby-blue transition-colors duration-300">{{ item.product.name }}</h3>
+            <p class="text-teal-green dark:text-baby-blue/80 transition-colors duration-300">Quantity: {{ item.quantity }}</p>
+            <p class="text-teal-green dark:text-baby-blue font-bold transition-colors duration-300">{{ item.product.price * item.quantity | currency:'ZAR':'symbol':'1.2-2' }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Order Total -->
+      <div class="text-right pt-4 animate-slide-up transition-colors duration-300" style="animation-delay: 300ms">
+        <p class="text-2xl font-bold text-teal-green dark:text-baby-blue flex items-center justify-end transition-colors duration-300">
+          <fa-icon [icon]="['fas', 'money-bill']" class="mr-2"></fa-icon>
+          Total: {{ total | currency:'ZAR':'symbol':'1.2-2' }}
+        </p>
+      </div>
+    </div>
+    
+    <!-- Payment Details -->
+    <h2 class="text-2xl font-semibold text-misty-blue dark:text-baby-blue mt-8 mb-4 flex items-center animate-slide-up transition-colors duration-300" style="animation-delay: 400ms">
+      <fa-icon [icon]="['fas', 'credit-card']" class="mr-2"></fa-icon>
+      Payment Details
+    </h2>
+    
+    <!-- Payment Form -->
+    <div class="space-y-4 animate-slide-up" style="animation-delay: 500ms">
+      <div class="relative">
+        <fa-icon [icon]="['fas', 'credit-card']" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-misty-blue dark:text-baby-blue transition-colors duration-300"></fa-icon>
+        <input [(ngModel)]="paymentDetails.cardNumber" name="cardNumber" type="text" placeholder="Card Number"
+               class="w-full p-3 pl-10 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-colors duration-300">
+      </div>
+      
+      <div class="relative">
+        <fa-icon [icon]="['fas', 'calendar']" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-misty-blue dark:text-baby-blue transition-colors duration-300"></fa-icon>
+        <input [(ngModel)]="paymentDetails.expiry" name="expiry" type="text" placeholder="MM/YY"
+               class="w-full p-3 pl-10 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-colors duration-300">
+      </div>
+      
+      <div class="relative">
+        <fa-icon [icon]="['fas', 'lock']" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-misty-blue dark:text-baby-blue transition-colors duration-300"></fa-icon>
+        <input [(ngModel)]="paymentDetails.cvv" name="cvv" type="text" placeholder="CVV"
+               class="w-full p-3 pl-10 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-colors duration-300">
+      </div>
+      
+      <button (click)="placeOrder()" [disabled]="processing || cartItems.length === 0" 
+              class="w-full bg-aqua dark:bg-bright-blue text-white py-3 rounded hover:bg-teal-green dark:hover:bg-baby-blue transition-colors duration-300 flex items-center justify-center animate-slide-up"
+              style="animation-delay: 600ms">
+        <fa-icon [icon]="['fas', 'check-circle']" class="mr-2"></fa-icon>
+        <span>Place Order</span>
+        <fa-icon *ngIf="processing" [icon]="['fas', 'spinner']" class="ml-2 animate-spin"></fa-icon>
+      </button>
+    </div>
+  </div>
+</section>

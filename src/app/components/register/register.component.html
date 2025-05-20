@@ -1,0 +1,55 @@
+<section class="bg-ivory dark:bg-dark-blue min-h-screen flex items-center justify-center p-6 transition-colors duration-300">
+  <div class="bg-white dark:bg-navy-blue rounded-lg shadow-lg p-8 max-w-md w-full animate-fade-in transition-colors duration-300">
+    <h1 class="text-2xl font-bold text-teal-green dark:text-baby-blue mb-6 flex items-center justify-center animate-slide-in-left transition-colors duration-300">
+      <fa-icon [icon]="['fas', 'user-plus']" class="mr-2 animate-bounce-light"></fa-icon>
+      Register
+    </h1>
+    
+    <form (ngSubmit)="register()" class="space-y-4 animate-slide-up" [style.animation-delay]="'200ms'">
+      <!-- Name Field -->
+      <div class="relative">
+        <fa-icon [icon]="['fas', 'user']" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-misty-blue dark:text-baby-blue transition-colors duration-300"></fa-icon>
+        <input [(ngModel)]="data.name" name="name" type="text" placeholder="Name" required
+               class="w-full p-3 pl-10 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-colors duration-300">
+      </div>
+      
+      <!-- Email Field -->
+      <div class="relative">
+        <fa-icon [icon]="['fas', 'envelope']" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-misty-blue dark:text-baby-blue transition-colors duration-300"></fa-icon>
+        <input [(ngModel)]="data.email" name="email" type="email" placeholder="Email" required
+               class="w-full p-3 pl-10 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-colors duration-300">
+      </div>
+      
+      <!-- Password Field -->
+      <div class="relative">
+        <fa-icon [icon]="['fas', 'lock']" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-misty-blue dark:text-baby-blue transition-colors duration-300"></fa-icon>
+        <input [(ngModel)]="data.password" name="password" type="password" placeholder="Password" required
+               class="w-full p-3 pl-10 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-colors duration-300">
+      </div>
+      
+      <!-- Billing Address Field -->
+      <div class="relative">
+        <fa-icon [icon]="['fas', 'address-card']" class="absolute left-3 top-6 text-misty-blue dark:text-baby-blue transition-colors duration-300"></fa-icon>
+        <textarea [(ngModel)]="data.billing_address" name="billing_address" placeholder="Billing Address"
+                  class="w-full p-3 pl-10 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-colors duration-300 min-h-[100px]"></textarea>
+      </div>
+      
+      <!-- Register Button -->
+      <button type="submit" [disabled]="loading"
+              class="w-full bg-aqua dark:bg-bright-blue text-white py-3 rounded hover:bg-teal-green dark:hover:bg-baby-blue transition-colors duration-300 flex items-center justify-center">
+        <fa-icon [icon]="['fas', 'user-plus']" class="mr-2" *ngIf="!loading"></fa-icon>
+        <span>Register</span>
+        <fa-icon [icon]="['fas', 'spinner']" class="ml-2 animate-spin" *ngIf="loading"></fa-icon>
+      </button>
+      
+      <!-- Login Link -->
+      <div class="text-center mt-4 animate-slide-up" [style.animation-delay]="'400ms'">
+        <p class="text-misty-blue dark:text-baby-blue transition-colors duration-300">Already have an account?</p>
+        <a routerLink="/login" class="text-aqua dark:text-baby-blue hover:text-teal-green dark:hover:text-white transition-colors duration-300 flex items-center justify-center mt-2">
+          <fa-icon [icon]="['fas', 'sign-in-alt']" class="mr-2"></fa-icon>
+          Login here
+        </a>
+      </div>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,126 @@
+<section class="bg-ivory dark:bg-dark-blue min-h-screen p-6 transition-colors duration-300">
+  <h1 class="text-3xl font-bold text-teal-green dark:text-baby-blue text-center mb-8 transition-colors duration-300">Admin Panel - Manage Products</h1>
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-white dark:bg-navy-blue rounded-lg shadow-lg p-8 mb-8 transition-colors duration-300">
+      <h2 class="text-2xl font-semibold text-misty-blue dark:text-baby-blue mb-4 transition-colors duration-300">Add New Product</h2>
+      <div class="space-y-4">
+        <input [(ngModel)]="newProduct.name" name="name" type="text" placeholder="Product Name"
+               class="w-full p-3 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-colors duration-300">
+        <textarea [(ngModel)]="newProduct.description" name="description" placeholder="Description"
+                  class="w-full p-3 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-colors duration-300"></textarea>
+        <input [(ngModel)]="newProduct.price" name="price" type="number" placeholder="Price" min="0"
+               class="w-full p-3 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-colors duration-300">
+        <div>
+          <input type="file" (change)="onFileChange($event)"
+                 class="w-full p-3 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue transition-colors duration-300">
+          <p class="text-sm mt-1 text-gray-500 dark:text-baby-blue/60 transition-colors duration-300">Select an image to crop to 450x450 pixels</p>
+          
+          <!-- Image cropper for new product -->
+          <div *ngIf="showCropper && !isEditMode" class="mt-4">
+            <h3 class="font-medium text-misty-blue dark:text-baby-blue mb-2 transition-colors duration-300">Crop Image</h3>
+            <image-cropper
+              [imageChangedEvent]="imageChangedEvent"
+              [maintainAspectRatio]="true"
+              [aspectRatio]="1"
+              [resizeToWidth]="450"
+              [resizeToHeight]="450"
+              format="png"
+              (imageCropped)="imageCropped($event)"
+              (imageLoaded)="imageLoaded()"
+              (loadImageFailed)="loadImageFailed()"
+            ></image-cropper>
+            <div class="flex justify-end mt-2 space-x-2">
+              <button class="bg-gray-500 dark:bg-dark-blue text-white py-2 px-4 rounded hover:bg-gray-600 dark:hover:bg-navy-blue transition-colors duration-300" (click)="cancelCropping()">
+                Cancel
+              </button>
+              <button class="bg-aqua dark:bg-bright-blue text-white py-2 px-4 rounded hover:bg-teal-green dark:hover:bg-baby-blue transition-colors duration-300" (click)="applyCropping()">
+                Apply
+              </button>
+            </div>
+          </div>
+        </div>
+        <select [(ngModel)]="newProduct.category_id" name="category_id"
+                class="w-full p-3 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue transition-colors duration-300">
+                <option value="" [defaultSelected]="true">Select Category</option>
+          <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+        </select>
+        <button (click)="createProduct()" class="w-full bg-aqua dark:bg-bright-blue text-white py-3 rounded hover:bg-teal-green dark:hover:bg-baby-blue transition-colors duration-300">
+          Add Product
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="editingProduct" class="bg-white dark:bg-navy-blue rounded-lg shadow-lg p-8 mb-8 transition-colors duration-300">
+      <h2 class="text-2xl font-semibold text-misty-blue dark:text-baby-blue mb-4 transition-colors duration-300">Edit Product</h2>
+      <div class="space-y-4">
+        <input [(ngModel)]="editForm.name" name="edit_name" type="text" placeholder="Product Name"
+               class="w-full p-3 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-colors duration-300">
+        <textarea [(ngModel)]="editForm.description" name="edit_description" placeholder="Description"
+                  class="w-full p-3 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-colors duration-300"></textarea>
+        <input [(ngModel)]="editForm.price" name="edit_price" type="number" placeholder="Price" min="0"
+               class="w-full p-3 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-colors duration-300">
+        <div>
+          <input type="file" (change)="onFileChange($event, true)"
+                 class="w-full p-3 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue transition-colors duration-300">
+          <p class="text-sm mt-1 text-gray-500 dark:text-baby-blue/60 transition-colors duration-300">Select an image to crop to 450x450 pixels</p>
+          
+          <!-- Image cropper for edit product -->
+          <div *ngIf="showCropper && isEditMode" class="mt-4">
+            <h3 class="font-medium text-misty-blue dark:text-baby-blue mb-2 transition-colors duration-300">Crop Image</h3>
+            <image-cropper
+              [imageChangedEvent]="imageChangedEvent"
+              [maintainAspectRatio]="true"
+              [aspectRatio]="1"
+              [resizeToWidth]="450"
+              [resizeToHeight]="450"
+              format="png"
+              (imageCropped)="imageCropped($event)"
+              (imageLoaded)="imageLoaded()"
+              (loadImageFailed)="loadImageFailed()"
+            ></image-cropper>
+            <div class="flex justify-end mt-2 space-x-2">
+              <button class="bg-gray-500 dark:bg-dark-blue text-white py-2 px-4 rounded hover:bg-gray-600 dark:hover:bg-navy-blue transition-colors duration-300" (click)="cancelCropping()">
+                Cancel
+              </button>
+              <button class="bg-aqua dark:bg-bright-blue text-white py-2 px-4 rounded hover:bg-teal-green dark:hover:bg-baby-blue transition-colors duration-300" (click)="applyCropping()">
+                Apply
+              </button>
+            </div>
+          </div>
+        </div>
+        <select [(ngModel)]="editForm.category_id" name="edit_category_id"
+                class="w-full p-3 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue transition-colors duration-300">
+          <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+        </select>
+        <div class="flex space-x-4">
+          <button (click)="updateProduct()" class="flex-1 bg-aqua dark:bg-bright-blue text-white py-3 rounded hover:bg-teal-green dark:hover:bg-baby-blue transition-colors duration-300">
+            Update Product
+          </button>
+          <button (click)="editingProduct = null; resetForm()" class="flex-1 bg-gray-500 dark:bg-dark-blue text-white py-3 rounded hover:bg-gray-600 dark:hover:bg-navy-blue transition-colors duration-300">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="text-2xl font-semibold text-misty-blue dark:text-baby-blue mb-4 transition-colors duration-300">Product List</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div *ngFor="let product of products" class="bg-white dark:bg-navy-blue rounded-lg shadow-lg p-4 transition-colors duration-300">
+        <div class="aspect-square w-full mb-4">
+          <img [src]="product.image_path | imageUrl" alt="{{ product.name }}" class="w-full h-full object-cover rounded-md">
+        </div>
+        <h3 class="text-xl font-semibold text-misty-blue dark:text-baby-blue transition-colors duration-300">{{ product.name }}</h3>
+        <p class="text-gray-600 dark:text-baby-blue/70 transition-colors duration-300">{{ product.description | slice:0:100 }}...</p>
+        <p class="text-teal-green dark:text-baby-blue font-bold mt-2 transition-colors duration-300">{{ product.price | currency:'ZAR':'symbol':'1.2-2' }}</p>
+        <div class="flex space-x-2 mt-4">
+          <button (click)="editProduct(product)" class="flex-1 bg-aqua dark:bg-bright-blue text-white py-2 rounded hover:bg-teal-green dark:hover:bg-baby-blue transition-colors duration-300">
+            Edit
+          </button>
+          <button (click)="deleteProduct(product.id)" class="flex-1 bg-red-500 dark:bg-red-700 text-white py-2 rounded hover:bg-red-600 dark:hover:bg-red-800 transition-colors duration-300">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

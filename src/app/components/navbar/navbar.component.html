@@ -1,0 +1,151 @@
+<nav class="bg-teal-green dark:bg-dark-blue text-white p-4 shadow-lg transition-colors duration-300">
+  <div class="container mx-auto flex flex-wrap justify-between items-center">
+    <!-- Logo -->
+    <a routerLink="/" class="text-2xl font-bold text-ivory dark:text-baby-blue flex items-center animate-fade-in">
+      <fa-icon [icon]="['fas', 'store']" class="mr-2 animate-bounce-light"></fa-icon>
+      <span>Ecommerce</span>
+    </a>
+    
+    <!-- Mobile menu button -->
+    <div class="flex items-center space-x-3 md:hidden">
+      <!-- Dark mode toggle on mobile -->
+      <button (click)="toggleDarkMode()" class="p-2 rounded-full focus:outline-none transition-colors duration-300" 
+              [class.bg-ivory]="!isDarkMode" 
+              [class.bg-navy-blue]="isDarkMode">
+        <fa-icon [icon]="['fas', 'sun']" *ngIf="!isDarkMode" class="text-teal-green text-xl"></fa-icon>
+        <fa-icon [icon]="['fas', 'moon']" *ngIf="isDarkMode" class="text-baby-blue text-xl"></fa-icon>
+      </button>
+      
+      <!-- Hamburger button -->
+      <button 
+        (click)="toggleMobileMenu()" 
+        class="p-2 rounded-md focus:outline-none hover:bg-aqua dark:hover:bg-bright-blue transition-colors duration-300"
+        aria-label="Toggle menu">
+        <fa-icon [icon]="['fas', 'bars']" *ngIf="!isMobileMenuOpen" class="text-xl"></fa-icon>
+        <fa-icon [icon]="['fas', 'times']" *ngIf="isMobileMenuOpen" class="text-xl"></fa-icon>
+      </button>
+    </div>
+    
+    <!-- Desktop menu -->
+    <ul class="hidden md:flex md:space-x-4 md:items-center">
+      <!-- Dark Mode Toggle Button -->
+      <li class="animate-slide-in-right" style="animation-delay: 50ms">
+        <button (click)="toggleDarkMode()" class="p-2 rounded-full focus:outline-none transition-colors duration-300" 
+                [class.bg-ivory]="!isDarkMode" 
+                [class.bg-navy-blue]="isDarkMode">
+          <fa-icon [icon]="['fas', 'sun']" *ngIf="!isDarkMode" class="text-teal-green text-xl"></fa-icon>
+          <fa-icon [icon]="['fas', 'moon']" *ngIf="isDarkMode" class="text-baby-blue text-xl"></fa-icon>
+        </button>
+      </li>
+      
+      <ng-container *ngIf="isAuthenticated$ | async; else notLoggedInDesktop">
+        <li class="animate-slide-in-right" style="animation-delay: 100ms">
+          <a routerLink="/products" class="hover:text-aqua dark:hover:text-baby-blue transition-colors duration-200 flex items-center">
+            <fa-icon [icon]="['fas', 'store']" class="mr-1"></fa-icon>
+            <span>Products</span>
+          </a>
+        </li>
+        <li *ngIf="authService.isAdmin()" class="text-aqua dark:text-baby-blue animate-slide-in-right" style="animation-delay: 200ms">
+          <a routerLink="/admin" class="hover:text-ivory dark:hover:text-white transition-colors duration-200 flex items-center">
+            <fa-icon [icon]="['fas', 'shield-alt']" class="mr-1"></fa-icon>
+            <span>Admin</span>
+          </a>
+        </li>
+        <li class="animate-slide-in-right" style="animation-delay: 300ms">
+          <a routerLink="/profile" class="hover:text-aqua dark:hover:text-baby-blue transition-colors duration-200 flex items-center">
+            <fa-icon [icon]="['fas', 'user']" class="mr-1"></fa-icon>
+            <span>Profile</span>
+          </a>
+        </li>
+        <li class="animate-slide-in-right" style="animation-delay: 400ms">
+          <a routerLink="/cart" class="hover:text-aqua dark:hover:text-baby-blue transition-colors duration-200 flex items-center">
+            <fa-icon [icon]="['fas', 'shopping-cart']" class="mr-1 relative"></fa-icon>
+            <span>Cart</span>
+            <span *ngIf="cartCount > 0" class="ml-1 bg-aqua dark:bg-baby-blue text-white dark:text-navy-blue text-xs rounded-full px-2 py-1 animate-pulse-subtle">
+              {{ cartCount }}
+            </span>
+          </a>
+        </li>
+        <li class="animate-slide-in-right" style="animation-delay: 500ms">
+          <button (click)="logout()" class="hover:text-aqua dark:hover:text-baby-blue transition-colors duration-200 flex items-center">
+            <fa-icon [icon]="['fas', 'sign-out-alt']" class="mr-1"></fa-icon>
+            <span>Logout</span>
+          </button>
+        </li>
+      </ng-container>
+      <ng-template #notLoggedInDesktop>
+        <li class="animate-slide-in-right" style="animation-delay: 100ms">
+          <a routerLink="/login" class="hover:text-aqua dark:hover:text-baby-blue transition-colors duration-200 flex items-center">
+            <fa-icon [icon]="['fas', 'sign-in-alt']" class="mr-1"></fa-icon>
+            <span>Login</span>
+          </a>
+        </li>
+        <li class="animate-slide-in-right" style="animation-delay: 200ms">
+          <a routerLink="/register" class="hover:text-aqua dark:hover:text-baby-blue transition-colors duration-200 flex items-center">
+            <fa-icon [icon]="['fas', 'user-plus']" class="mr-1"></fa-icon>
+            <span>Register</span>
+          </a>
+        </li>
+      </ng-template>
+    </ul>
+    
+    <!-- Mobile menu (full width below the header) -->
+    <div 
+      [class.hidden]="!isMobileMenuOpen" 
+      class="w-full md:hidden mt-4 animate-fade-in"
+      [class.animate-slide-up]="isMobileMenuOpen"
+      [class.animate-slide-down]="!isMobileMenuOpen">
+      <ul class="flex flex-col space-y-3 py-2">
+        <ng-container *ngIf="isAuthenticated$ | async; else notLoggedInMobile">
+          <li>
+            <a routerLink="/products" (click)="closeMobileMenu()" class="block py-2 px-4 hover:bg-aqua dark:hover:bg-bright-blue hover:text-white rounded-md transition-colors duration-200 flex items-center">
+              <fa-icon [icon]="['fas', 'store']" class="mr-3"></fa-icon>
+              <span>Products</span>
+            </a>
+          </li>
+          <li *ngIf="authService.isAdmin()">
+            <a routerLink="/admin" (click)="closeMobileMenu()" class="block py-2 px-4 hover:bg-aqua dark:hover:bg-bright-blue hover:text-white rounded-md transition-colors duration-200 flex items-center text-aqua dark:text-baby-blue">
+              <fa-icon [icon]="['fas', 'shield-alt']" class="mr-3"></fa-icon>
+              <span>Admin</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/profile" (click)="closeMobileMenu()" class="block py-2 px-4 hover:bg-aqua dark:hover:bg-bright-blue hover:text-white rounded-md transition-colors duration-200 flex items-center">
+              <fa-icon [icon]="['fas', 'user']" class="mr-3"></fa-icon>
+              <span>Profile</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/cart" (click)="closeMobileMenu()" class="block py-2 px-4 hover:bg-aqua dark:hover:bg-bright-blue hover:text-white rounded-md transition-colors duration-200 flex items-center">
+              <fa-icon [icon]="['fas', 'shopping-cart']" class="mr-3 relative"></fa-icon>
+              <span>Cart</span>
+              <span *ngIf="cartCount > 0" class="ml-2 bg-aqua dark:bg-baby-blue text-white dark:text-navy-blue text-xs rounded-full px-2 py-1 animate-pulse-subtle">
+                {{ cartCount }}
+              </span>
+            </a>
+          </li>
+          <li>
+            <button (click)="logout()" class="w-full text-left py-2 px-4 hover:bg-aqua dark:hover:bg-bright-blue hover:text-white rounded-md transition-colors duration-200 flex items-center">
+              <fa-icon [icon]="['fas', 'sign-out-alt']" class="mr-3"></fa-icon>
+              <span>Logout</span>
+            </button>
+          </li>
+        </ng-container>
+        <ng-template #notLoggedInMobile>
+          <li>
+            <a routerLink="/login" (click)="closeMobileMenu()" class="block py-2 px-4 hover:bg-aqua dark:hover:bg-bright-blue hover:text-white rounded-md transition-colors duration-200 flex items-center">
+              <fa-icon [icon]="['fas', 'sign-in-alt']" class="mr-3"></fa-icon>
+              <span>Login</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/register" (click)="closeMobileMenu()" class="block py-2 px-4 hover:bg-aqua dark:hover:bg-bright-blue hover:text-white rounded-md transition-colors duration-200 flex items-center">
+              <fa-icon [icon]="['fas', 'user-plus']" class="mr-3"></fa-icon>
+              <span>Register</span>
+            </a>
+          </li>
+        </ng-template>
+      </ul>
+    </div>
+  </div>
+</nav>

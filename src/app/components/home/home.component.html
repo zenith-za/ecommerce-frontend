@@ -1,0 +1,73 @@
+<section class="bg-ivory dark:bg-dark-blue min-h-screen p-6 transition-colors duration-300">
+  <h1 class="text-3xl font-bold text-teal-green dark:text-baby-blue text-center mb-8 animate-fade-in transition-colors duration-300">Welcome to Our Store</h1>
+  
+  <!-- Category Filter -->
+  <div class="max-w-4xl mx-auto mb-8 animate-slide-in-left">
+    <div class="bg-white dark:bg-navy-blue rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="flex-1">
+          <label for="category" class="block text-misty-blue dark:text-baby-blue font-semibold mb-2 flex items-center transition-colors duration-300">
+            <fa-icon [icon]="['fas', 'filter']" class="mr-2"></fa-icon>
+            Filter by Category
+          </label>
+          <select 
+            [(ngModel)]="selectedCategory" 
+            (ngModelChange)="onCategoryChange()"
+            name="category" 
+            id="category"
+            class="w-full p-3 border rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue dark:border-baby-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-all duration-300">
+            <option [ngValue]="null">All Categories</option>
+            <option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+        <div class="text-misty-blue dark:text-baby-blue transition-colors duration-300">
+          <p class="font-semibold flex items-center">
+            <fa-icon [icon]="['fas', 'tags']" class="mr-2"></fa-icon>
+            Showing {{ filteredProducts.length }} product{{ filteredProducts.length !== 1 ? 's' : '' }}
+          </p>
+          <p *ngIf="selectedCategory" class="text-sm">
+            in {{ getSelectedCategoryName() }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="text-center py-12 animate-fade-in">
+    <fa-icon [icon]="['fas', 'spinner']" class="text-teal-green dark:text-baby-blue fa-spin text-4xl transition-colors duration-300"></fa-icon>
+    <p class="mt-4 text-misty-blue dark:text-baby-blue transition-colors duration-300">Loading products...</p>
+  </div>
+
+  <!-- Product Grid -->
+  <div *ngIf="!loading && filteredProducts.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div *ngFor="let product of filteredProducts; let i = index" 
+         class="bg-white dark:bg-navy-blue rounded-lg shadow-lg p-4 hover:shadow-xl transition-all duration-300 animate-slide-up" 
+         [style.animation-delay]="i * 50 + 'ms'">
+      <div class="aspect-square w-full mb-4 overflow-hidden rounded-md">
+        <img [src]="product.image_path | imageUrl" alt="{{ product.name }}" class="w-full h-full object-cover rounded-md hover:scale-110 transition-transform duration-500">
+      </div>
+      <h2 class="text-xl font-semibold text-misty-blue dark:text-baby-blue transition-colors duration-300">{{ product.name }}</h2>
+      <p class="text-gray-600 dark:text-baby-blue/70 transition-colors duration-300">{{ product.description | slice:0:100 }}...</p>
+      <p class="text-teal-green dark:text-baby-blue font-bold mt-2 transition-colors duration-300">{{ product.price | currency:'ZAR':'symbol':'1.2-2' }}</p>
+      <a [routerLink]="['/product', product.id]" class="mt-4 inline-block bg-aqua dark:bg-bright-blue text-white px-4 py-2 rounded hover:bg-teal-green dark:hover:bg-baby-blue transition-colors duration-200 w-full text-center flex items-center justify-center">
+        <fa-icon [icon]="['fas', 'eye']" class="mr-2"></fa-icon>
+        View Details
+      </a>
+    </div>
+  </div>
+
+  <!-- No Products Found Message -->
+  <div *ngIf="!loading && filteredProducts.length === 0" class="text-center py-12 animate-fade-in">
+    <p class="text-2xl text-misty-blue dark:text-baby-blue font-semibold mb-2 transition-colors duration-300">No Products Found</p>
+    <p class="text-gray-600 dark:text-baby-blue/70 transition-colors duration-300">Try selecting a different category or check back later for new products.</p>
+    <button 
+      (click)="selectedCategory = null; onCategoryChange()" 
+      class="mt-4 bg-aqua dark:bg-bright-blue text-white px-6 py-2 rounded hover:bg-teal-green dark:hover:bg-baby-blue transition-colors duration-200 flex items-center mx-auto">
+      <fa-icon [icon]="['fas', 'search']" class="mr-2"></fa-icon>
+      Show All Products
+    </button>
+  </div>
+</section>

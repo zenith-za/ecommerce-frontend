@@ -1,0 +1,41 @@
+<section class="bg-ivory dark:bg-dark-blue min-h-screen flex items-center justify-center p-6 transition-colors duration-300">
+  <div class="bg-white dark:bg-navy-blue rounded-lg shadow-lg p-8 max-w-md w-full animate-fade-in transition-colors duration-300">
+    <h1 class="text-2xl font-bold text-teal-green dark:text-baby-blue mb-6 flex items-center animate-slide-in-left transition-colors duration-300">
+      <fa-icon [icon]="['fas', 'user']" class="mr-2"></fa-icon>
+      Edit Profile
+    </h1>
+    
+    <!-- Loading indicator -->
+    <div *ngIf="loading" class="text-center py-6 animate-fade-in">
+      <fa-icon [icon]="['fas', 'spinner']" class="text-teal-green dark:text-baby-blue fa-spin text-4xl transition-colors duration-300"></fa-icon>
+      <p class="mt-2 text-misty-blue dark:text-baby-blue transition-colors duration-300">Loading profile...</p>
+    </div>
+    
+    <div *ngIf="!loading" class="space-y-4 animate-slide-up">
+      <div class="relative">
+        <fa-icon [icon]="['fas', 'user']" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-misty-blue dark:text-baby-blue transition-colors duration-300"></fa-icon>
+        <input [(ngModel)]="user.name" name="name" type="text" placeholder="Name"
+               class="w-full p-3 pl-10 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-colors duration-300">
+      </div>
+      
+      <div class="relative">
+        <fa-icon [icon]="['fas', 'envelope']" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-misty-blue dark:text-baby-blue transition-colors duration-300"></fa-icon>
+        <input [(ngModel)]="user.email" name="email" type="email" placeholder="Email"
+               class="w-full p-3 pl-10 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue transition-colors duration-300">
+      </div>
+      
+      <div class="relative">
+        <fa-icon [icon]="['fas', 'address-card']" class="absolute left-3 top-6 text-misty-blue dark:text-baby-blue transition-colors duration-300"></fa-icon>
+        <textarea [(ngModel)]="user.billing_address" name="billing_address" placeholder="Billing Address"
+                  class="w-full p-3 pl-10 border dark:border-baby-blue/50 rounded text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none focus:ring-2 focus:ring-aqua dark:focus:ring-baby-blue min-h-[100px] transition-colors duration-300"></textarea>
+      </div>
+      
+      <button (click)="updateProfile()" [disabled]="loading" 
+              class="w-full bg-aqua dark:bg-bright-blue text-white py-3 rounded hover:bg-teal-green dark:hover:bg-baby-blue transition-colors duration-300 flex items-center justify-center">
+        <fa-icon [icon]="['fas', 'save']" class="mr-2"></fa-icon>
+        <span>Update Profile</span>
+        <fa-icon *ngIf="loading" [icon]="['fas', 'spinner']" class="ml-2 animate-spin"></fa-icon>
+      </button>
+    </div>
+  </div>
+</section>

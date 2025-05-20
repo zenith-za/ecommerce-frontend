@@ -1,0 +1,81 @@
+<section class="bg-ivory dark:bg-dark-blue min-h-screen p-6 transition-colors duration-300">
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="text-center py-12 animate-fade-in">
+    <fa-icon [icon]="['fas', 'spinner']" class="text-teal-green dark:text-baby-blue fa-spin text-4xl transition-colors duration-300"></fa-icon>
+    <p class="mt-4 text-misty-blue dark:text-baby-blue transition-colors duration-300">Loading product details...</p>
+  </div>
+  
+  <!-- Product Details -->
+  <div *ngIf="!loading && product" class="max-w-4xl mx-auto bg-white dark:bg-navy-blue rounded-lg shadow-lg p-8 animate-fade-in transition-colors duration-300">
+    <!-- Back button for mobile -->
+    <button [routerLink]="['/']" class="mb-4 text-misty-blue dark:text-baby-blue hover:text-teal-green dark:hover:text-baby-blue transition-colors duration-300 flex items-center md:hidden animate-slide-in-left">
+      <fa-icon [icon]="['fas', 'arrow-left']" class="mr-2"></fa-icon>
+      Back to Products
+    </button>
+    
+    <div class="flex flex-col md:flex-row">
+      <!-- Product Image -->
+      <div class="w-full md:w-1/2 aspect-square mb-4 md:mb-0 md:mr-6 overflow-hidden rounded-md animate-slide-in-left relative group">
+        <div class="absolute top-2 right-2 bg-aqua dark:bg-bright-blue text-white px-2 py-1 rounded-full z-10 opacity-90 flex items-center transition-colors duration-300">
+          <fa-icon [icon]="['fas', 'tag']" class="mr-1 text-xs"></fa-icon>
+          <span class="text-sm font-semibold">{{ product.price | currency:'ZAR':'symbol':'1.2-2' }}</span>
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <fa-icon [icon]="['fas', 'image']" class="text-white text-4xl"></fa-icon>
+        </div>
+        <img [src]="product.image_path | imageUrl" alt="{{ product.name }}" 
+             class="w-full h-full object-cover rounded-md group-hover:scale-105 transition-transform duration-500">
+      </div>
+      
+      <!-- Product Info -->
+      <div class="flex-1 animate-slide-in-right">
+        <h1 class="text-3xl font-bold text-teal-green dark:text-baby-blue mb-4 flex items-center transition-colors duration-300">
+          <fa-icon [icon]="['fas', 'box-open']" class="mr-3 text-aqua dark:text-baby-blue transition-colors duration-300"></fa-icon>
+          <span>{{ product.name }}</span>
+        </h1>
+        
+        <p class="text-misty-blue dark:text-baby-blue/90 mb-4 flex items-start transition-colors duration-300">
+          <fa-icon [icon]="['fas', 'info-circle']" class="mr-2 mt-1 text-aqua dark:text-baby-blue transition-colors duration-300"></fa-icon>
+          <span>{{ product.description }}</span>
+        </p>
+        
+        <p class="text-teal-green dark:text-baby-blue font-bold text-2xl mb-4 flex items-center transition-colors duration-300">
+          <fa-icon [icon]="['fas', 'dollar-sign']" class="mr-2 text-aqua dark:text-baby-blue transition-colors duration-300"></fa-icon>
+          {{ product.price | currency:'ZAR':'symbol':'1.2-2' }}
+        </p>
+        
+        <!-- Quantity Selector -->
+        <div class="flex items-center mb-6">
+          <label class="mr-3 text-misty-blue dark:text-baby-blue flex items-center transition-colors duration-300">
+            <fa-icon [icon]="['fas', 'shopping-cart']" class="mr-2 text-aqua dark:text-baby-blue transition-colors duration-300"></fa-icon>
+            Quantity:
+          </label>
+          <div class="flex items-center border dark:border-baby-blue rounded transition-colors duration-300">
+            <button (click)="decrementQuantity()" class="px-3 py-1 text-misty-blue dark:text-baby-blue hover:bg-gray-100 dark:hover:bg-navy-blue transition-colors duration-300">
+              <fa-icon [icon]="['fas', 'minus']" class="text-aqua dark:text-baby-blue transition-colors duration-300"></fa-icon>
+            </button>
+            <input [(ngModel)]="quantity" name="quantity" type="number" min="1"
+                   class="w-16 p-2 text-center text-misty-blue dark:text-baby-blue dark:bg-navy-blue focus:outline-none transition-colors duration-300">
+            <button (click)="incrementQuantity()" class="px-3 py-1 text-misty-blue dark:text-baby-blue hover:bg-gray-100 dark:hover:bg-navy-blue transition-colors duration-300">
+              <fa-icon [icon]="['fas', 'plus']" class="text-aqua dark:text-baby-blue transition-colors duration-300"></fa-icon>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex space-x-4 animate-slide-up" style="animation-delay: 300ms">
+          <button (click)="addToCart()" [disabled]="addingToCart"
+                  class="flex-1 bg-aqua dark:bg-bright-blue text-white px-6 py-3 rounded hover:bg-teal-green dark:hover:bg-baby-blue transition-colors duration-300 flex items-center justify-center">
+            <fa-icon [icon]="['fas', 'shopping-cart']" class="mr-2"></fa-icon>
+            <span>Add to Cart</span>
+            <fa-icon *ngIf="addingToCart" [icon]="['fas', 'spinner']" class="ml-2 animate-spin"></fa-icon>
+          </button>
+          <button [routerLink]="['/']" class="flex-1 bg-gray-500 dark:bg-navy-blue text-white px-6 py-3 rounded hover:bg-gray-600 dark:hover:bg-dark-blue transition-colors duration-300 flex items-center justify-center">
+            <fa-icon [icon]="['fas', 'arrow-left']" class="mr-2"></fa-icon>
+            <span>Back</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
