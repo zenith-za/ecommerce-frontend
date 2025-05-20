@@ -18,7 +18,7 @@ A modern, responsive frontend for an ecommerce platform built with Angular 19, f
 * RxJS: Reactive programming for handling asynchronous operations.
 * Angular Material: For dialog components (e.g., alerts).
 
-🎨 Color Palette
+## 🎨 Color Palette
 
 
 
@@ -30,7 +30,7 @@ A modern, responsive frontend for an ecommerce platform built with Angular 19, f
 | Aqua | #00CED1 |
 
 
-📦 ## Installation
+## 📦 Installation
 ###  Prerequisites
 * Node.js: v20.x or later
 * npm: v10.x or later
@@ -66,20 +66,20 @@ ng serve
 
 
 
-🖥️ ## Usage
+## 🖥️ Usage
 
 * Login/Register: Navigate to /login or /register to authenticate.
 * Browse Products: Go to /products to view available products.
 * Cart: Access /cart to manage your shopping cart.
 * Profile: Visit /profile to view user details (requires authentication).
 
-🧪 ## Testing
+## 🧪 Testing
 Run unit tests with:
 <pre>
 ng test
 </pre>
 
-🚀 ## Deployment
+## 🚀 Deployment
 
 1. Build for production:
 <pre>
@@ -89,10 +89,10 @@ ng build --prod
 
 2. Deploy the dist/ folder to your hosting provider (e.g., Netlify, Vercel).
 
-📜 ## License
+## 📜 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-🤝 ## Contributing
+## 🤝 Contributing
 
 1. Fork the repository.
 2. Create a new branch (git checkout -b feature/your-feature).
@@ -100,8 +100,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 4. Push to the branch (git push origin feature/your-feature).
 5. Open a Pull Request.
 
-📧 ## Contact
-For questions or feedback, reach out at your-email@example.com.
+## 📧 Contact
+For questions or feedback, reach out at math.knowledge458@gmail.com.
 
 ---------------------------------------------------------------------------------------------
 Built with 💻 by Knowledge Mathebula.
