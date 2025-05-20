@@ -40,7 +40,7 @@ A modern, responsive frontend for an ecommerce platform built with Angular 19, f
 
 1. ### Clone the Repository:
 <pre>
-git clone https://github.com/your-username/ecommerce-frontend.git
+git clone https://github.com/zenith-za/ecommerce-frontend.git
 cd ecommerce-frontend
 </pre>
 
