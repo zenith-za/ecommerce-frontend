@@ -10,7 +10,7 @@ A modern, responsive frontend for an ecommerce platform built with Angular 19, f
 * Clean Architecture: Domain-driven design with use cases and services.
 * Standalone Components: Modular, reusable components for scalability.
 
-🛠️ ## Tech Stack
+## 🛠️ Tech Stack
 
 * Angular 19: Frontend framework with standalone components.
 * Tailwind CSS: Utility-first CSS framework for styling.
